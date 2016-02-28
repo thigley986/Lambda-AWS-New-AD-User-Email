@@ -1,0 +1,42 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "s3:ListAllMyBuckets",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": [
+                "arn:aws:s3:::<BUCKET_NAME>",
+                "arn:aws:s3:::<BUCKET_NAME>/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": [
+                "arn:aws:dynamodb:<ARN_Remainder>"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ses:SendEmail",
+                "ses:SendRawEmail"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
