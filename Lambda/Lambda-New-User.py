@@ -52,6 +52,24 @@ def lambda_handler(event, context):
             user_email = user['EmailAddress']
             user_guid = user['objectGUID']
 
+       try:
+            object = s3.get_object(Bucket=bucket,Key=file_name)['Body']
+
+        except Exception, e:
+            print ("Error Encountered while downloading file.")
+            print (e)
+            exit()
+
+        users = json.load(object)
+
+        #Send Welcome Email to New User
+        print("****Sending Welcome Emails****")
+        
+        for user in users:
+            user_name = user['DisplayName']
+            user_email = user['EmailAddress']
+            user_guid = user['objectGUID']
+
             try:
                 response = db.get_item(
                     TableName= table_name,
@@ -64,10 +82,12 @@ def lambda_handler(event, context):
                 )
             except:
                 print("Error in DynamoDB item fetch.")
-
-            try:
-                print(response['Item']['GUID'])
-            except:
+            
+            dynamo_GUID = json.dumps(response)
+            
+            if user_guid in dynamo_GUID:
+                print("Found GUID: %s" % dynamo_GUID)
+            else:
                 print("User %s %s not found.  Sending Welcome Email" % (user_name, user_email))
                 response = ses.send_email(
     		        Source = email_from,
@@ -105,6 +125,5 @@ def lambda_handler(event, context):
                         }
                     }
                 )
-
-        print("Deleting File")
-        s3.delete_object(Bucket=bucket,Key=file_name)
+    print("Deleting File")
+    s3.delete_object(Bucket=bucket,Key=file_name)
