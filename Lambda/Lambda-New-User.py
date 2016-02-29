@@ -49,7 +49,7 @@ def lambda_handler(event, context):
         
         for user in users:
             user_name = user['DisplayName']
-            user_email = user['EmailAddress]
+            user_email = user['EmailAddress']
             user_guid = user['objectGUID']
 
             try:
