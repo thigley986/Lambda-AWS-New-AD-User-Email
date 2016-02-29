@@ -6,7 +6,7 @@ import json
 import collections
 
 #Define S3 Bucket
-bucket = "lambda-ad-new-user-email.ette.biz"
+bucket = "BUCKET_NAME"
 
 #Define DynamoDB Table Name
 table_name = "Lambda-AD-New-User-Email-GUID"
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
         
         for user in users:
             user_name = user['DisplayName']
-            user_email = 'thigley@ette.biz'
+            user_email = user['EmailAddress]
             user_guid = user['objectGUID']
 
             try:
